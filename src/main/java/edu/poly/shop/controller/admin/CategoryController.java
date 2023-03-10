@@ -21,43 +21,46 @@ import edu.poly.shop.service.CategoryService;
 public class CategoryController {
 	@Autowired
 	CategoryService categoryService;
-	
+
 	@GetMapping("add")
 	public String add(Model model) {
 		model.addAttribute("category", new CategoryDto());
-		
+
 		return "admin/categories/addOrEdit";
 	}
-	
+
 	@GetMapping("edit/{categoryId}")
 	public String edit() {
-	  return "admin/categories/addOrEdit";
+		return "admin/categories/addOrEdit";
 	}
+
 	@GetMapping("delete/{categoryId}")
 	public String delete() {
 		return "redirect:/admin/categories";
-	    
+
 	}
+
 	@PostMapping("saveOrUpdate")
-	public ModelAndView  saveOrUpdate(ModelMap model, CategoryDto dto) {
-		
+	public ModelAndView saveOrUpdate(ModelMap model, CategoryDto dto) {
+
 		Category entity = new Category();
 		BeanUtils.copyProperties(dto, entity);
-		
+
 		CategoryService.save(entity);
-		 model.addAttribute("message", "category is saved!");
-		 
-		return new ModelAndView( "redirect:/admin/categories", model);
+		model.addAttribute("message", "category is saved!");
+
+		return new ModelAndView("redirect:/admin/categories", model);
 	}
-	
+
 	@GetMapping("")
 	public String list(ModelMap model) {
 		List<Category> list = categoryService.findAll();
-		
+
 		model.addAttribute("categories", list);
-		
+
 		return "admin/categories/list";
 	}
+
 	@GetMapping("search")
 	public String search() {
 		return "admin/categories/search";
